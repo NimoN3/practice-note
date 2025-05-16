@@ -8,10 +8,16 @@ export default function Home() {
   const [note, setNote] = useState('');
 
   const handleNext = () => {
-    const entry = { date, menu, note };
-    localStorage.setItem('tempEntry', JSON.stringify(entry));
-    router.push('/confirm');
-  };
+  const entry = { date, menu, note };
+  localStorage.setItem('tempEntry', JSON.stringify(entry));
+
+  const editIndex = localStorage.getItem('editIndex');
+  if (editIndex !== null) {
+    localStorage.setItem('editMode', 'true');
+  }
+
+  router.push('/confirm');
+};
 
   return (
     <div className="p-4 max-w-md mx-auto">
