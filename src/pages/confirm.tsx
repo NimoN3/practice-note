@@ -19,13 +19,25 @@ export default function ConfirmPage() {
   }, []);
 
   const handleSubmit = () => {
-    if (!entry) return;
-    const existing = JSON.parse(localStorage.getItem('logEntries') || '[]');
+  if (!entry) return;
+
+  const existing = JSON.parse(localStorage.getItem('logEntries') || '[]');
+  const editMode = localStorage.getItem('editMode');
+  const editIndex = parseInt(localStorage.getItem('editIndex') || '-1');
+
+  if (editMode && !isNaN(editIndex)) {
+    existing[editIndex] = entry;
+  } else {
     existing.push(entry);
-    localStorage.setItem('logEntries', JSON.stringify(existing));
-    localStorage.removeItem('tempEntry');
-    router.push('/logs');
-  };
+  }
+
+  localStorage.setItem('logEntries', JSON.stringify(existing));
+  localStorage.removeItem('tempEntry');
+  localStorage.removeItem('editMode');
+  localStorage.removeItem('editIndex');
+
+  router.push('/logs');
+};
 
   if (!entry) return <p>読み込み中...</p>;
 
